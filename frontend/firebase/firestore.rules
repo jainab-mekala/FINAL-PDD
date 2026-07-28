@@ -1,0 +1,51 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Helper functions
+    function isAuthenticated() {
+      return request.auth != null;
+    }
+
+    function isOwner(doctorId) {
+      return request.auth.uid == doctorId;
+    }
+
+    // Users collection
+    match /users/{userId} {
+      allow read: if isAuthenticated() && request.auth.uid == userId;
+      allow write: if isAuthenticated() && request.auth.uid == userId;
+    }
+
+    // Doctors collection
+    match /doctors/{doctorId} {
+      allow read: if isAuthenticated() && request.auth.uid == doctorId;
+      allow write: if isAuthenticated() && request.auth.uid == doctorId;
+    }
+
+    // Patients collection
+    match /patients/{patientId} {
+      allow read: if isAuthenticated() && isOwner(resource.data.doctorId);
+      allow create: if isAuthenticated() && isOwner(request.resource.data.doctorId);
+      allow update: if isAuthenticated() && isOwner(resource.data.doctorId);
+      allow delete: if isAuthenticated() && isOwner(resource.data.doctorId);
+    }
+
+    // Implants collection
+    match /implants/{implantId} {
+      allow read: if isAuthenticated() && isOwner(resource.data.doctorId);
+      allow create: if isAuthenticated() && isOwner(request.resource.data.doctorId);
+      allow update: if isAuthenticated() && isOwner(resource.data.doctorId);
+      allow delete: if isAuthenticated() && isOwner(resource.data.doctorId);
+    }
+
+    // Assessments collection
+    match /assessments/{assessmentId} {
+      allow read: if isAuthenticated() && isOwner(resource.data.doctorId);
+      allow create: if isAuthenticated() && isOwner(request.resource.data.doctorId);
+      allow update: if isAuthenticated() && isOwner(resource.data.doctorId);
+      allow delete: if isAuthenticated() && isOwner(resource.data.doctorId);
+    }
+  }
+}

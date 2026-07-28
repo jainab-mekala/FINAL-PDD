@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- ImplantGuard AI Brand Colors -->
+    <color name="primary_cyan">#00D4FF</color>
+    <color name="primary_dark">#050E1A</color>
+    <color name="surface_dark">#0D1F2D</color>
+    <color name="card_dark">#112233</color>
+    <color name="risk_low">#00FF9F</color>
+    <color name="risk_moderate">#FFD700</color>
+    <color name="risk_high">#FF6B35</color>
+    <color name="risk_critical">#FF4444</color>
+
+    <!-- Splash / Launch screen background -->
+    <color name="ic_launcher_background">#050E1A</color>
+</resources>

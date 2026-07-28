@@ -1,0 +1,39 @@
+{
+  "frontend_target_url": "http://127.0.0.1:8080",
+  "app_routes": [
+    "/",
+    "/onboarding",
+    "/wizard",
+    "/result",
+    "/auth/login",
+    "/auth/register",
+    "/dashboard",
+    "/patients",
+    "/patients/add",
+    "/monitoring",
+    "/reports",
+    "/reports/detail",
+    "/public-analyzer",
+    "/settings",
+    "/settings/profile",
+    "/settings/terms",
+    "/settings/about",
+    "/settings/privacy",
+    "/settings/change-password",
+    "/suggestions"
+  ],
+  "viewports": [
+    { "name": "Desktop 1080p", "width": 1920, "height": 1080 },
+    { "name": "Desktop 900p", "width": 1400, "height": 900 },
+    { "name": "Tablet Portrait", "width": 768, "height": 1024 },
+    { "name": "Mobile Pixel 7", "width": 412, "height": 915 },
+    { "name": "Mobile iPhone 15", "width": 390, "height": 844 }
+  ],
+  "sample_form_inputs": {
+    "age": "45",
+    "hba1c": "5.5",
+    "diameter": "3.75",
+    "length": "10.0",
+    "time_in_function": "24"
+  }
+}

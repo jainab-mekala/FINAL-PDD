@@ -1,0 +1,77 @@
+name: implantguard_ai
+description: ImplantGuard AI™ - Peri-implantitis Early Detection Surveillance System
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: '>=3.0.0 <4.0.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+  http: ^1.2.0
+  
+  # Firebase
+  firebase_core: ^4.7.0
+  firebase_auth: ^6.4.0
+  cloud_firestore: ^6.3.0
+  firebase_storage: ^13.3.0
+  firebase_messaging: ^16.2.0
+
+  # State Management
+  provider: ^6.1.2
+  riverpod: ^3.2.1
+  flutter_riverpod: ^3.3.1
+
+  # UI Components
+  fl_chart: ^1.2.0
+  syncfusion_flutter_charts: ^33.2.3
+  flutter_animate: ^4.5.0
+  lottie: ^3.1.0
+  shimmer: ^3.0.0
+  flutter_svg: ^2.0.10+1
+  cached_network_image: ^3.3.1
+  image_picker: ^1.0.7
+
+  # Navigation
+  go_router: ^17.2.2
+
+  # Utilities
+  intl: ^0.20.2
+  shared_preferences: ^2.2.3
+  uuid: ^4.4.0
+  dio: ^5.4.3+1
+  connectivity_plus: ^7.1.1
+  permission_handler: ^12.0.1
+  local_auth: ^3.0.1
+  flutter_local_notifications: ^21.0.0
+
+  # Data & AI
+  tflite_flutter: ^0.12.1
+  ml_algo: ^16.18.0
+
+  # PDF & Export
+  pdf: ^3.10.8
+  printing: ^5.12.0
+  share_plus: ^13.1.0
+
+  # Forms & Validation
+  flutter_form_builder: ^10.3.0+2
+  form_builder_validators: ^11.3.0
+
+  # Icons & Fonts
+  cupertino_icons: ^1.0.6
+  font_awesome_flutter: ^11.0.0
+  google_fonts: ^8.0.2
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  build_runner: ^2.4.9
+  riverpod_generator: ^4.0.3
+
+flutter:
+  uses-material-design: true
+  assets:
+    - assets/images/

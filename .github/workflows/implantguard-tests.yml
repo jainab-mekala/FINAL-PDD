@@ -1,0 +1,148 @@
+name: ImplantGuard AI — Selenium & Appium E2E Reports
+
+on:
+  push:
+    branches: ["main", "master"]
+  pull_request:
+    branches: ["main", "master"]
+
+jobs:
+  # ─────────────────────────────────────────────────────────────────
+  # JOB 1 — Selenium E2E Web Tests
+  # ─────────────────────────────────────────────────────────────────
+  selenium-e2e-web-tests:
+    name: Selenium E2E Web Tests
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-selenium-${{ hashFiles('**/selenium_requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-selenium-
+
+      - name: Install Selenium test dependencies
+        run: |
+          pip install --upgrade pip
+          pip install selenium==4.18.1 requests==2.31.0 openpyxl==3.1.2 \
+                      webdriver-manager==4.0.1 pytest==7.4.3 pytest-html==4.1.1
+
+      - name: Run Selenium E2E Web Test Suite
+        env:
+          WEB_URL: "http://localhost:64796"
+          API_URL: "https://api-implant-developed-1.onrender.com"
+        run: |
+          python "frontend testing/selenium_e2e_test.py"
+
+      - name: Upload Selenium HTML Report
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: selenium-e2e-report
+          path: frontend/frontend testing/test_results/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────
+  # JOB 2 — Appium Android E2E Report
+  # ─────────────────────────────────────────────────────────────────
+  appium-android-e2e-report:
+    name: Appium Android E2E Report
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: frontend
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Appium report dependencies
+        run: |
+          pip install --upgrade pip
+          pip install requests==2.31.0 openpyxl==3.1.2
+
+      - name: Generate Appium Android E2E Report
+        env:
+          API_URL: "https://api-implant-developed-1.onrender.com"
+        run: |
+          python "frontend testing/appium_android_report.py"
+
+      - name: Upload Appium Report Artifact
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: appium-android-report
+          path: frontend/frontend testing/test_results/
+          retention-days: 30
+
+  # ─────────────────────────────────────────────────────────────────
+  # JOB 3 — Backend & Frontend Simulated Reports
+  # ─────────────────────────────────────────────────────────────────
+  backend-frontend-simulated-reports:
+    name: Backend & Frontend Simulated Reports
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Cache pip dependencies
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-pip-backend-${{ hashFiles('backend/requirements.txt') }}
+          restore-keys: |
+            ${{ runner.os }}-pip-backend-
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: |
+          pip install --upgrade pip
+          pip install fastapi uvicorn scikit-learn==1.5.2 pandas joblib numpy \
+                      requests openpyxl
+
+      - name: Run Backend Model Tests
+        working-directory: backend
+        run: |
+          python backend_simulated_report.py
+
+      - name: Run Frontend Simulated UI Report
+        working-directory: frontend
+        env:
+          WEB_URL: "http://localhost:64796"
+          API_URL: "https://api-implant-developed-1.onrender.com"
+        run: |
+          python "frontend testing/frontend_test.py"
+
+      - name: Upload Backend Test Results
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: backend-frontend-simulated-reports
+          path: |
+            backend/test_results/
+            frontend/frontend testing/test_results/
+          retention-days: 30

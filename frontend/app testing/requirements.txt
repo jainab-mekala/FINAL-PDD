@@ -1,0 +1,24 @@
+# ImplantGuard AI — Test Suite Dependencies
+# ==========================================
+# Install with: pip install -r requirements.txt
+
+# Core testing
+pytest==8.3.5
+pytest-html==4.1.1
+
+# Selenium (web E2E)
+selenium==4.27.1
+webdriver-manager==4.0.2
+
+# Appium (mobile/desktop)
+Appium-Python-Client==4.3.0
+
+# HTTP / API testing
+requests==2.32.3
+
+# Excel reporting
+openpyxl==3.1.5
+
+# Utilities
+python-dotenv==1.0.1
+Pillow==10.4.0

@@ -1,0 +1,47 @@
+{
+  "firestore": {
+    "rules": "firebase/firestore.rules",
+    "indexes": "firebase/firestore.indexes.json"
+  },
+  "storage": {
+    "rules": "firebase/storage.rules"
+  },
+  "emulators": {
+    "auth": {
+      "port": 9099
+    },
+    "firestore": {
+      "port": 8080
+    },
+    "storage": {
+      "port": 9199
+    },
+    "ui": {
+      "enabled": true,
+      "port": 4000
+    }
+  },
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "implant-42f2c",
+          "appId": "1:706848168654:android:efb3a12103f80161df8e9f",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "implant-42f2c",
+          "configurations": {
+            "android": "1:706848168654:android:efb3a12103f80161df8e9f",
+            "ios": "1:706848168654:ios:d09eeeb016facf57df8e9f",
+            "macos": "1:706848168654:ios:d09eeeb016facf57df8e9f",
+            "web": "1:706848168654:web:6a2625dc811989dedf8e9f",
+            "windows": "1:706848168654:web:1681a30a23765f46df8e9f"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,6 @@
+services:
+  - type: web
+    name: implant-api
+    runtime: python
+    buildCommand: "pip install -r requirements.txt && python train_model_hybrid.py"
+    startCommand: "uvicorn main_hybrid:app --host 0.0.0.0 --port $PORT"
