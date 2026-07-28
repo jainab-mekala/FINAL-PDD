@@ -12,7 +12,8 @@ from openpyxl.utils import get_column_letter
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
-RESULTS_DIR = r"c:\Users\Mithu\Downloads\implant full\frontend\app testing\test_results"
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+RESULTS_DIR = os.path.join(SCRIPT_DIR, "test_results")
 os.makedirs(RESULTS_DIR, exist_ok=True)
 EXCEL_PATH = os.path.join(RESULTS_DIR, "ImplantGuard_E2E_Test_Results.xlsx")
 

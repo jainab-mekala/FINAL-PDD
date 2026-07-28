@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "generated_at": "2026-07-28T04:22:51.316722+00:00",
+  "summary": {
+    "appium_tests": 1,
+    "passed": 1,
+    "failed": 0
+  },
+  "message": "Appium Android report generated successfully."
+}
