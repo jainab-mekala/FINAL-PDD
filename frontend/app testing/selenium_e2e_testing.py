@@ -141,31 +141,32 @@ def run_selenium_e2e_suite():
     start_suite_time = time.time()
     tasks = []
 
-    # 1. API Health (20)
-    for i in range(20):
+    # 1. API Health (30)
+    for i in range(30):
         tasks.append((i+1, "API Health Check", f"Root Endpoint Availability #{i+1}", f"{API_BASE_URL}/", "GET", f"{API_BASE_URL}/", None))
 
-    # 2. CORS Preflight (20)
+    # 2. CORS Preflight (30)
     origins = ["http://localhost:8080", "http://127.0.0.1:8080", "http://localhost:3000", "https://implantguard.app"]
-    for i, origin in enumerate(origins * 5):
-        tasks.append((20 + i + 1, "CORS & Security", f"CORS Preflight Option #{i+1} ({origin})", f"{API_BASE_URL}/predict", "OPTIONS", f"{API_BASE_URL}/predict", origin))
+    for i, origin in enumerate(origins * 8):
+        if i >= 30: break
+        tasks.append((30 + i + 1, "CORS & Security", f"CORS Preflight Option #{i+1} ({origin})", f"{API_BASE_URL}/predict", "OPTIONS", f"{API_BASE_URL}/predict", origin))
 
-    # 3. Training Stats (20)
-    for i in range(20):
-        tasks.append((40 + i + 1, "Training Stats", f"Stats Data Integrity #{i+1}", f"{API_BASE_URL}/training-stats", "GET", f"{API_BASE_URL}/training-stats", None))
+    # 3. Training Stats (30)
+    for i in range(30):
+        tasks.append((60 + i + 1, "Training Stats", f"Stats Data Integrity #{i+1}", f"{API_BASE_URL}/training-stats", "GET", f"{API_BASE_URL}/training-stats", None))
 
     # 4. Age Variations (30)
     for i, age in enumerate(range(20, 80, 2)):
         p = BASE_PAYLOAD.copy()
         p["age_years"] = float(age)
-        tasks.append((60 + i + 1, "Age Param Test", f"Prediction for Age {age}", f"{API_BASE_URL}/predict", "POST", p, None))
+        tasks.append((90 + i + 1, "Age Param Test", f"Prediction for Age {age}", f"{API_BASE_URL}/predict", "POST", p, None))
 
     # 5. HbA1c Variations (30)
     hba1c_vals = [4.5 + x * 0.25 for x in range(30)]
     for i, val in enumerate(hba1c_vals):
         p = BASE_PAYLOAD.copy()
         p["hba1c_percent"] = round(val, 2)
-        tasks.append((90 + i + 1, "HbA1c Param Test", f"Prediction for HbA1c {val:.2f}%", f"{API_BASE_URL}/predict", "POST", p, None))
+        tasks.append((120 + i + 1, "HbA1c Param Test", f"Prediction for HbA1c {val:.2f}%", f"{API_BASE_URL}/predict", "POST", p, None))
 
     # 6. Surface & Prosthesis (30)
     surfaces = ["Machined", "Moderately_rough", "Rough"]
@@ -175,14 +176,14 @@ def run_selenium_e2e_suite():
         p = BASE_PAYLOAD.copy()
         p["implant_surface"] = s
         p["prosthesis_type"] = pr
-        tasks.append((120 + i + 1, "Surface & Prosthesis", f"Combo ({s} + {pr})", f"{API_BASE_URL}/predict", "POST", p, None))
+        tasks.append((150 + i + 1, "Surface & Prosthesis", f"Combo ({s} + {pr})", f"{API_BASE_URL}/predict", "POST", p, None))
 
     # 7. Time in Function (30)
     months_list = [1, 3, 6, 12, 18, 24, 30, 36, 42, 48, 60, 72, 84, 96, 108, 120, 132, 144, 156, 168, 180, 192, 204, 216, 228, 240, 252, 264, 276, 300]
     for i, m in enumerate(months_list):
         p = BASE_PAYLOAD.copy()
         p["time_in_function_months"] = float(m)
-        tasks.append((150 + i + 1, "Time in Function", f"Duration {m} months", f"{API_BASE_URL}/predict", "POST", p, None))
+        tasks.append((180 + i + 1, "Time in Function", f"Duration {m} months", f"{API_BASE_URL}/predict", "POST", p, None))
 
     # 8. Comorbidity Permutations (30)
     permo_cnt = 0
@@ -190,14 +191,16 @@ def run_selenium_e2e_suite():
         for diab in ["Yes", "No"]:
             for perio in ["Yes", "No"]:
                 for maint in ["Regular", "Irregular"]:
-                    if permo_cnt >= 30: break
-                    p = BASE_PAYLOAD.copy()
-                    p["sex"] = sex
-                    p["diabetes"] = diab
-                    p["history_periodontitis"] = perio
-                    p["maintenance_compliance"] = maint
-                    tasks.append((180 + permo_cnt + 1, "Comorbidity Permutations", f"Profile ({sex}, Diab:{diab})", f"{API_BASE_URL}/predict", "POST", p, None))
-                    permo_cnt += 1
+                    for surf in ["Machined", "Rough"]:  # add one more loop to get more permutations
+                        if permo_cnt >= 30: break
+                        p = BASE_PAYLOAD.copy()
+                        p["sex"] = sex
+                        p["diabetes"] = diab
+                        p["history_periodontitis"] = perio
+                        p["maintenance_compliance"] = maint
+                        p["implant_surface"] = surf
+                        tasks.append((210 + permo_cnt + 1, "Comorbidity Permutations", f"Profile ({sex}, Diab:{diab})", f"{API_BASE_URL}/predict", "POST", p, None))
+                        permo_cnt += 1
 
     # 9. Frontend Routes (30)
     routes = [
@@ -208,16 +211,16 @@ def run_selenium_e2e_suite():
         "/settings/change-password", "/suggestions"
     ]
     for i, route in enumerate((routes * 2)[:30]):
-        tasks.append((210 + i + 1, "Frontend E2E Routes", f"Route Verification #{i+1} ({route})", f"{WEB_BASE_URL}/#{route}", "GET_WEB", f"{WEB_BASE_URL}/#{route}", None))
+        tasks.append((240 + i + 1, "Frontend E2E Routes", f"Route Verification #{i+1} ({route})", f"{WEB_BASE_URL}/#{route}", "GET_WEB", f"{WEB_BASE_URL}/#{route}", None))
 
     # 10. Negative Validations (30)
     bad_payloads = [{}, {"age_years": "bad"}, {"sex": "Invalid"}, {"diabetes": 999}] * 8
     for i, bad_p in enumerate(bad_payloads[:30]):
-        tasks.append((240 + i + 1, "Validation Negative", f"Invalid Input Schema #{i+1}", f"{API_BASE_URL}/predict", "POST_BAD", bad_p, None))
+        tasks.append((270 + i + 1, "Validation Negative", f"Invalid Input Schema #{i+1}", f"{API_BASE_URL}/predict", "POST_BAD", bad_p, None))
 
     # 11. Latency & Stress (30)
     for i in range(30):
-        tasks.append((270 + i + 1, "Performance Stress", f"Parallel Benchmark #{i+1}", f"{API_BASE_URL}/predict", "POST", BASE_PAYLOAD, None))
+        tasks.append((300 + i + 1, "Performance Stress", f"Parallel Benchmark #{i+1}", f"{API_BASE_URL}/predict", "POST", BASE_PAYLOAD, None))
 
     # Execute worker function in high-performance thread pool
     def execute_single_test(item):

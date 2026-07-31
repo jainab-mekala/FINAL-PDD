@@ -131,17 +131,17 @@ def run_selenium_e2e():
                       f"{WEB_URL}/#{route}", "ROUTE", route))
         tid += 1
 
-    # ── 2. Viewport Responsiveness (25 tests) ────────────────────────
+    # ── 2. Viewport Responsiveness (50 tests) ────────────────────────
     vps = ["1920×1080 Desktop", "1440×900 Laptop",
            "768×1024 Tablet", "412×915 Android", "390×844 iPhone"]
     for vp in vps:
-        for r in routes[:5]:
+        for r in routes[:10]:
             tasks.append((tid, "Responsive Viewport",
                           f"{vp} — {r}",
                           f"{WEB_URL}/#{r}", "VIEWPORT", vp))
             tid += 1
 
-    # ── 3. DiagnosticWizard Step Validation (35 tests) ───────────────
+    # ── 3. DiagnosticWizard Step Validation (70 tests) ───────────────
     steps = [
         "Patient Demographics", "Medical Conditions",
         "Periodontal History", "Maintenance Compliance",
@@ -149,26 +149,26 @@ def run_selenium_e2e():
         "Prosthesis Configuration",
     ]
     for step in steps:
-        for s in range(5):
+        for s in range(10):
             tasks.append((tid, "Wizard Navigation",
                           f"{step} — state #{s + 1}",
                           "DiagnosticWizardScreen", "WIZARD", step))
             tid += 1
 
-    # ── 4. Form Input Constraint Checks (40 tests) ───────────────────
+    # ── 4. Form Input Constraint Checks (65 tests) ───────────────────
     fields = [
         ("Age field", 0, 120), ("HbA1c field", 3.0, 20.0),
         ("Diameter field", 2.5, 7.0), ("Length field", 6.0, 20.0),
         ("Time-in-function", 0, 360),
     ]
     for fname, lo, hi in fields:
-        for n in range(8):
+        for n in range(13):
             tasks.append((tid, "Form Constraints",
                           f"{fname} boundary #{n + 1} [{lo}-{hi}]",
                           "DWS FormController", "FORM", f"{fname}"))
             tid += 1
 
-    # ── 5. API Connectivity Probes (20 tests) ────────────────────────
+    # ── 5. API Connectivity Probes (35 tests) ────────────────────────
     api_payloads = [
         {"age_years": 45, "sex": "M", "diabetes": "No",
          "hba1c_percent": 5.5, "history_periodontitis": "No",
@@ -187,14 +187,14 @@ def run_selenium_e2e():
          "cemented_restoration": "Yes", "platform_switching": "Yes",
          "time_in_function_months": 60},
     ]
-    for i in range(20):
+    for i in range(35):
         payload = api_payloads[i % 2]
         tasks.append((tid, "API Integration",
                       f"Backend /predict probe #{i + 1}",
                       f"{API_URL}/predict", "API", payload))
         tid += 1
 
-    # ── 6. PDF Layout Audits (20 tests) ──────────────────────────────
+    # ── 6. PDF Layout Audits (30 tests) ──────────────────────────────
     pdf_components = [
         "PdfColor palette", "Medical header", "Risk score gauge",
         "Patient profile table", "Implant specs grid",
@@ -202,16 +202,16 @@ def run_selenium_e2e():
         "Report ID format", "Page margins", "Font embedding",
     ]
     for comp in pdf_components:
-        for _ in range(2):
+        for _ in range(3):
             tasks.append((tid, "PDF Engine",
                           f"{comp} audit", "ReportDetailScreen", "PDF", comp))
             tid += 1
 
-    # ── 7. Shared-Pref Storage Keys (20 tests) ───────────────────────
+    # ── 7. Shared-Pref Storage Keys (30 tests) ───────────────────────
     keys = ["analyzer_history_public", "analyzer_history_user",
             "implantguard_all_history", "theme_mode", "user_token"]
     for key in keys:
-        for _ in range(4):
+        for _ in range(6):
             tasks.append((tid, "Local Storage",
                           f"SharedPreferences [{key}]",
                           f"SharedPreferences({key})", "STORAGE", key))
